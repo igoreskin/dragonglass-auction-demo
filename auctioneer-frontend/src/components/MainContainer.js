@@ -25,7 +25,8 @@ const MainContainer = (props) => {
     useEffect(() => { props.users.length > 0 && setUserMap(props.users[0]) }, [props.users]);
 
     const dispatch = useDispatch();
-    const apiKey = <your-api-key>;
+    // const apiKey = <your-api-key>;
+    const apiKey = 'ad63b9a4-d0e7-30b9-8622-69bcdd9166ae';
 
    const handleTxnUpdate = (txn) => {
         allEvents.unshift(txn);
