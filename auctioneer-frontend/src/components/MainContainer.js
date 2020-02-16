@@ -4,6 +4,7 @@ import { connect, useDispatch } from 'react-redux';
 import Header from './Header';
 import BidContainer from './BidContainer';
 import TableContainer from './TableContainer';
+import { getBids } from '../reducers';
 import { getTransactions } from '../reducers';
 import { getUsers } from '../reducers';
 
@@ -13,8 +14,8 @@ import * as Stomp from 'stompjs';
 let allEvents = [];
 
 const MainContainer = (props) => {
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
+
     useEffect(() => { fetchData() }, []);
 
     const [a, setA] = useState([]);
@@ -55,13 +56,12 @@ const MainContainer = (props) => {
                     item["consensusTime"] = response.transactionID.validStartDate;
                     item["account"] = response.inputValues[0];
                     item["amount"] = response.inputValues[1];
-                    if(response.inputValues[1] > highestAmount && response.inputValues[0] !== lastBidder){
-                      highestAmount = response.inputValues[1];
-                      lastBidder = response.inputValues[0];
-                      handleTxnUpdate(item);
-                      dispatch({type: "HIGHESTBID",
-                        		payload: item.amount});
-                        		}
+                    console.log("current bid - ", response.inputValues[1]);
+                    highestAmount = response.inputValues[1];
+                    lastBidder = response.inputValues[0];
+                    handleTxnUpdate(item);
+                    dispatch({type: "HIGHESTBID",
+                          payload: item.amount});
                 });
                 stompClient.subscribe('/queue/auctionEnd', function({body}) {
                       let response  = JSON.parse(body);
